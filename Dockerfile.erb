@@ -1,4 +1,4 @@
-FROM busybox
+FROM bcit/alpine:3.11
 
 <%= snippet('labels', binding) -%>
 
@@ -8,5 +8,11 @@ FROM busybox
 
 <%= snippet('tini', binding) -%>
 
+RUN apk add --no-cache \
+    lua \
+    luarocks
+
+RUN ln -s luarocks-5.1 /usr/bin/luarocks
+
 ENTRYPOINT ["/tini", "--", "/docker-entrypoint.sh"]
-CMD [ "init-loop" ]
+CMD [ "lua" ]
